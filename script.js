@@ -72,7 +72,7 @@ function showLibrary(library) {
                 cellText = document.createElement("button");
                 cellText.innerHTML = "Delete";
                 cellText.addEventListener("click", function (){
-                    removeBook(book)   
+                    removeBook(book)    
                 });
                 break;
             default:
@@ -105,6 +105,7 @@ function addBookFunction() {
    const newBook = new Book(bookName, bookAuthor, bookPages, bookRead, bookIndex);
    addBookToLibrary(newBook);
    console.log(`${newBook.info()} has been added to the library`);
+   showLibrary(myLibrary);
 }
 
 addBookBtn.addEventListener("click", addBookFunction);
