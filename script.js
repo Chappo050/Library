@@ -2,7 +2,8 @@ let myLibrary = [];
 const addBookBtn = document.getElementById("newBookBtn");
 const refreshTableBtn = document.getElementById("refreshTableBtn");
 const body = document.getElementsByTagName("body")[0];
-function Book(title, author, pages, read){
+
+function Book(title, author, pages, read, index){
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -10,6 +11,16 @@ function Book(title, author, pages, read){
     this.info = function () {
         return(`${this.title} by ${this.author}, ${this.pages} pages, ${this.read} yet.`)
     }
+
+}
+
+function removeBook(book) {
+    for (let i = 0; i < myLibrary.length; i++) {
+        if (book === myLibrary[i]) {
+            myLibrary.splice(i,1);
+        }
+    }
+    showLibrary(myLibrary);
 }
 
 
@@ -19,25 +30,26 @@ function addBookToLibrary(newBook) {
 
 function showLibrary(library) {
     const prevTable = document.getElementById("libraryTable")
+
     //create a <table> element and a <tableBody> element
-    console.log(prevTable);
     if (prevTable !== null) {
         prevTable.parentElement.removeChild(prevTable);
     }
+
     const table = document.createElement("table");
     const tableBody = document.createElement("tableBody");
     table.id = "libraryTable";
-    
-    let rowcounter = 0
 
     //create all cells
     library.forEach(book => {
+        const currentBook = book.title;
         const row = document.createElement('tr');
-        const element = book;
-        console.log(element);
-        for (let i = 0; i < 4; i++) {
+
+        for (let i = 0; i < 5; i++) {
+            
         const cell = document.createElement("td");
         let cellText = undefined;
+
         switch (i) {
             case 0:
                 cellText = document.createTextNode(`${book.title}`);
@@ -54,18 +66,26 @@ function showLibrary(library) {
             case 3:
                 cellText = document.createTextNode(`${book.read}`);
                 break;
+
+            case 4:
+                //Create a delete button
+                cellText = document.createElement("button");
+                cellText.innerHTML = "Delete";
+                cellText.addEventListener("click", function (){
+                    removeBook(book)   
+                });
+                break;
             default:
                 break;
         }
         cell.appendChild(cellText);
         row.appendChild(cell);      
-            
         }
         
 
         //add a row to the end of the table body
         tableBody.appendChild(row);
-        rowcounter++;
+
     });
 
     // put the <tableBody> in the <table>
@@ -81,8 +101,8 @@ function addBookFunction() {
     const bookAuthor = prompt("Enter the Author of the book.");
     const bookPages = prompt("Enter the amount of pages.");
     const bookRead = prompt("Has the book been read? (Read/Not Read)");
-
-   const newBook = new Book(bookName, bookAuthor, bookPages, bookRead);
+    const bookIndex = myLibrary.length +1;
+   const newBook = new Book(bookName, bookAuthor, bookPages, bookRead, bookIndex);
    addBookToLibrary(newBook);
    console.log(`${newBook.info()} has been added to the library`);
 }
