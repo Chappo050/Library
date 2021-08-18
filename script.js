@@ -1,6 +1,7 @@
 let myLibrary = [];
 const addBookBtn = document.getElementById("newBookBtn");
-const container = document.getElementsByClassName("container");
+const refreshTableBtn = document.getElementById("refreshTableBtn");
+const body = document.getElementsByTagName("body")[0];
 function Book(title, author, pages, read){
     this.title = title;
     this.author = author;
@@ -17,26 +18,62 @@ function addBookToLibrary(newBook) {
 }
 
 function showLibrary(library) {
-    library.forEach(element => {
-        //create a <table> element and a <tableBody> elemetn
-        const table = document.createElement("table");
-        const tableBody = document.createElement("tableBody");
+    const prevTable = document.getElementById("libraryTable")
+    //create a <table> element and a <tableBody> element
+    console.log(prevTable);
+    if (prevTable !== null) {
+        prevTable.parentElement.removeChild(prevTable);
+    }
+    const table = document.createElement("table");
+    const tableBody = document.createElement("tableBody");
+    table.id = "libraryTable";
+    
+    let rowcounter = 0
 
-        //create all cells
-        for (let i = 0; i < myLibrary.length; i++) {
-            const row = document.createElement('tr');
+    //create all cells
+    library.forEach(book => {
+        const row = document.createElement('tr');
+        const element = book;
+        console.log(element);
+        for (let i = 0; i < 4; i++) {
+        const cell = document.createElement("td");
+        let cellText = undefined;
+        switch (i) {
+            case 0:
+                cellText = document.createTextNode(`${book.title}`);
+                break;
+        
+            case 1:
+                cellText = document.createTextNode(`${book.author}`);
+                break;
 
-            for (let j = 0; j < myLibrary.length; j++) {
+            case 2:
+                cellText = document.createTextNode(`${book.pages}`);
+                break;
 
-                const cell = document.createElement("td");
-                const cellText = document.createElement("Cell in row" + i + "column" + j)
-                
-            }
-
+            case 3:
+                cellText = document.createTextNode(`${book.read}`);
+                break;
+            default:
+                break;
+        }
+        cell.appendChild(cellText);
+        row.appendChild(cell);      
             
         }
-        console.table(element.info());
+        
+
+        //add a row to the end of the table body
+        tableBody.appendChild(row);
+        rowcounter++;
     });
+
+    // put the <tableBody> in the <table>
+    table.appendChild(tableBody);
+    //appends <table> into <body>
+    body.appendChild(table);
+    //sets the border attribute of the table to 2;
+    table.setAttribute("border", "1");
 }
 
 function addBookFunction() {
@@ -51,7 +88,8 @@ function addBookFunction() {
 }
 
 addBookBtn.addEventListener("click", addBookFunction);
-
+addBookBtn.addEventListener("click", addBookFunction);
+refreshTableBtn.addEventListener("click", function () {showLibrary(myLibrary);} )
 
 
 
