@@ -2,7 +2,7 @@ let myLibrary = [];
 const addBookBtn = document.getElementById("newBookBtn");
 const refreshTableBtn = document.getElementById("refreshTableBtn");
 const body = document.getElementsByTagName("body")[0];
-const tableFields = 5;
+const tableFields = 6;
 
 //elements
 const radRead = document.getElementById("bookReadTrue");
@@ -28,7 +28,6 @@ function removeBook(book) {
     showLibrary(myLibrary);
 }
 
-
 function addBookToLibrary(newBook) {
     myLibrary.push(newBook);
 }
@@ -51,7 +50,7 @@ function showLibrary(library) {
     
     for (let i = 0; i < tableFields; i++) {
         const headerCell = document.createElement('td')
-        const fieldArr = ["Title", "Author", "Pages", "Read", "Delete"]
+        const fieldArr = ["Title", "Author", "Pages", "Read", "Change Status", "Delete"]
         cellText = document.createTextNode(fieldArr[i]);
         headerCell.appendChild(cellText);
         headerRow.appendChild(headerCell);
@@ -90,6 +89,22 @@ function showLibrary(library) {
             case 4:
                 //Create a delete button
                 cellText = document.createElement("button");
+                cellText.innerHTML = "Status";
+                cellText.addEventListener("click", function (){
+                    if (book.read) {
+                        book.read = false;
+                        showLibrary(myLibrary);
+                    }    
+                    else{
+                        book.read = true;
+                        showLibrary(myLibrary);
+                    }
+                });
+                break;
+            
+            case 5:
+                //Create a delete button
+                cellText = document.createElement("button");
                 cellText.innerHTML = "Delete";
                 cellText.addEventListener("click", function (){
                     removeBook(book)    
@@ -123,6 +138,22 @@ function addBookFunction() {
 
     let bookRead = false;
 
+    //check if there is content
+    if (bookName.value && bookAuthor.value && bookPages.value && (radNotRead.checked || radRead.checked)) {
+
+        const newBook = new Book(bookName.value, bookAuthor.value, bookPages.value, bookRead);
+        addBookToLibrary(newBook);
+        console.log(`${newBook.info()} has been added to the library`);
+
+        //Clear all fields
+        bookName.value = null;
+        bookAuthor.value = null;
+        bookPages.value = null;
+        radRead.checked = false;
+        radNotRead.checked =false;
+        showLibrary(myLibrary);
+    }
+
     if (radRead.checked) {
         bookRead = true;
     }
@@ -130,17 +161,6 @@ function addBookFunction() {
         bookRead = false;
     }
 
-    const newBook = new Book(bookName.value, bookAuthor.value, bookPages.value, bookRead);
-    addBookToLibrary(newBook);
-    console.log(`${newBook.info()} has been added to the library`);
-
-    //Clear all fields
-    bookName.value = null;
-    bookAuthor.value = null;
-    bookPages.value = null;
-    radRead.checked = false;
-    radNotRead.checked =false;
-    showLibrary(myLibrary);
 }
 
 addBookBtn.addEventListener("click", addBookFunction);
@@ -152,9 +172,9 @@ radNotRead.addEventListener('click', () => radRead.checked = false);
 
 
 
-const theHobbit = new Book("The Hobbit", "J.R.R Tolkien", "295", "not read");
-const theHobbit1 = new Book("The Hobbit1", "J.R.R Tolkien", "295", "not read");
-const theHobbit2 = new Book("The Hobbit2", "J.R.R Tolkien", "295", "not read");
+const theHobbit = new Book("The Hobbit", "J.R.R Tolkien", "295", false);
+const theHobbit1 = new Book("The Hobbit1", "J.R.R Tolkien", "295", false);
+const theHobbit2 = new Book("The Hobbit2", "J.R.R Tolkien", "295", true);
 addBookToLibrary(theHobbit);
 addBookToLibrary(theHobbit1);
 addBookToLibrary(theHobbit2);
