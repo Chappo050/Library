@@ -129,6 +129,8 @@ function showLibrary(library) {
     body.appendChild(table);
     //sets the border attribute of the table to 2;
     table.setAttribute("border", "1");
+
+    storeLibrary(library);
 }
 
 function addBookFunction() {
@@ -163,22 +165,33 @@ function addBookFunction() {
 
 }
 
+
+//Stolen code that allows the saving of objects to local storage
+Storage.prototype.setObj = function(key, obj) {
+    return this.setItem(key, JSON.stringify(obj))
+}
+//Stolen code that allows the getting of objects to local storage
+Storage.prototype.getObj = function(key) {
+    return JSON.parse(this.getItem(key))
+}
+
+function storeLibrary(library) {
+    if (library) {
+        localStorage.setObj("savedLib", library) //Key is not the obj key but the key to save shit under
+        };
+    }
+
+function getLibrary() {
+    myLibrary = localStorage.getObj("savedLib"); //Acces the key the library has been saved to
+}
+
+//Event Listeners
 addBookBtn.addEventListener("click", addBookFunction);
 addBookBtn.addEventListener("click", addBookFunction);
-refreshTableBtn.addEventListener("click", function () {showLibrary(myLibrary);} )
+//refreshTableBtn.addEventListener("click", function () {showLibrary(myLibrary);} )
 radRead.addEventListener('click', () => radNotRead.checked = false);
 radNotRead.addEventListener('click', () => radRead.checked = false);
 
 
-
-
-const theHobbit = new Book("The Hobbit", "J.R.R Tolkien", "295", false);
-const theHobbit1 = new Book("The Hobbit1", "J.R.R Tolkien", "295", false);
-const theHobbit2 = new Book("The Hobbit2", "J.R.R Tolkien", "295", true);
-addBookToLibrary(theHobbit);
-addBookToLibrary(theHobbit1);
-addBookToLibrary(theHobbit2);
+getLibrary();
 showLibrary(myLibrary);
-
-
-

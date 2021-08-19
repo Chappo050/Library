@@ -1,0 +1,64 @@
+.inputForm{
+    display: grid;
+    grid-template-columns: 170px;
+    grid-template-rows: 50px 50px 50px 50px;
+    gap: 5px;
+    grid-template-areas: 
+    "title"
+    "author"
+    "pages"
+    "read"
+    "button"
+    ;
+}
+
+h1{
+    width: 130px;
+    border-color:darkslategrey;
+    border-style: dotted;
+    width: max-content;
+    border-width: 20px;
+
+}
+
+h2{
+    border-style: double;
+    width:max-content;
+}
+
+.inputLables{
+    border: lightgray;
+    border-width: 2px;
+    padding: 3px;
+    border-style: solid;
+    padding-bottom: 1px;
+}
+
+
+.inputField{
+    width: 100%;
+}
+
+#bookTitle{
+    grid-area: title;
+}
+
+#bookAuthor{
+    grid-area: author;
+}
+
+#bookPages{
+    grid-area: pages;
+}
+
+#bookReadTrue{
+    grid-area: read;
+}
+
+#bookReadFalse{
+    grid-area: read;
+}
+
+#newBookBtn{
+    grid-area: button;
+}
